@@ -180,9 +180,9 @@ There are separate Django management commands for each task:
     $ ./manage.py pruneusers
     ```    
 
-When you first try these commands on your data, it is a good idea to 
-test them on a copy of your database, not on the live database right away. 
-In a production setup, you should also have regular, automated database 
+When you first try these commands on your data, it is a good idea to
+test them on a copy of your database, not on the live database right away.
+In a production setup, you should also have regular, automated database
 backups set up.
 
 ## Integrations
