@@ -40,7 +40,7 @@ class AddChannelTestCase(BaseTestCase):
 
     ### Test that the team access works
     def test_teamaccess_works(self):
-        
+
         url = reverse('hc-add-channel')
         form = {"kind": "email", "value": "alice@example.com"}
 
@@ -63,5 +63,3 @@ class AddChannelTestCase(BaseTestCase):
         url = "/integrations/add_%s" % bad_kind
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
-
-

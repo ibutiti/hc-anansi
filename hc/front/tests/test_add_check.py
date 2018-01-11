@@ -19,7 +19,7 @@ class AddCheckTestCase(BaseTestCase):
         self.client.get(reverse('hc-checks'))
         assert Check.objects.count() == 0
         self.client.logout()
-        
+
         # Login with Alice and add a new check then logout.
         self.client.login(username="alice@example.org", password="password")
         url = reverse('hc-add-check')
