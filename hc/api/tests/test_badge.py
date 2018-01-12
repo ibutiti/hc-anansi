@@ -12,7 +12,8 @@ class BadgeTestCase(BaseTestCase):
         self.check = Check.objects.create(user=self.alice, tags="foo bar")
 
     def test_it_rejects_bad_signature(self):
-        r = self.client.get("/badge/%s/12345678/foo.svg" % self.alice.username)
+        r = self.client.get("/badge/%s/12345678/foo.svg" %
+                            self.alice.username)  # reverse method, var naming
         # Assert the expected response status code
         self.assertEqual(r.status_code, 400)
 
@@ -23,5 +24,5 @@ class BadgeTestCase(BaseTestCase):
 
         r = self.client.get(url)
         # Assert that the svg is returned
-        print(r.content)
+        # print(r.content)
         self.assertContains(r, "svg")  # Check for svg tag in xml
