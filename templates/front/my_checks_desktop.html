@@ -30,12 +30,14 @@
         </td>
         <td class="name-cell">
             <div data-name="{{ check.name }}"
-                    data-tags="{{ check.tags }}"
+                    data-tags="{{ check.tags }} {{chech.}}"
                     data-url="{% url 'hc-update-name' check.code %}"
                     class="my-checks-name {% if not check.name %}unnamed{% endif %}">
                 <div>{{ check.name|default:"unnamed" }}</div>
                 {% for tag in check.tags_list %}
+                {% if tag != "Unresolved-Checks" %}
                 <span class="label label-tag">{{ tag }}</span>
+                {% endif %}
                 {% endfor %}
             </div>
         </td>

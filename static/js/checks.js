@@ -95,7 +95,8 @@ $(function () {
 
         $("#update-name-form").attr("action", $this.data("url"));
         $("#update-name-input").val($this.data("name"));
-        $("#update-tags-input").val($this.data("tags"));
+        // remove the unresolved tag from the tags form
+        $("#update-tags-input").val(($this.data("tags")).replace("Unresolved-Checks", ""));
         $('#update-name-modal').modal("show");
         $("#update-name-input").focus();
 
@@ -123,6 +124,43 @@ $(function () {
         return false;
     });
 
+    $("#filter-unresolved-btn button").click(function(){
+        // add checked class to mark it has been clicked
+        $(this).toggleClass("checked");
+
+        // test state of the button
+        if ($(this).hasClass("checked")){
+            // change the heading of the page depending on button checked state
+            $("h1").text("Unresolved Checks");
+            // loop through the rows of checks
+            $("tr.checks-row").each(function(index, element){
+                // if a check has the icon-down class, add the class unresolved
+                // which will be avoided by the tags filters
+                // if ($(this, "td > span.status").not(".icon-down").length > 0){
+                //     $(this).hide()
+                //     $(this).addClass("unresolved")
+                // }
+                $("span.icon-down", this).parent().parent().addClass("unresolved");
+                // if a check is not down, hide it
+                $(".status", this).not(".icon-down").parent().parent().hide();
+            })
+        }
+        else {
+            // if button state is not checked, show the my checks title
+            $("h1").text("My Checks");
+            // loop through the rows
+            $("tr.checks-row").each(function(index, element){
+                // show the element if it has not been filtered by the checks
+                $(this).not(".filtered").show();
+                // remove the class unresolved so tags filter will not ignore it
+                $(this).removeClass("unresolved");
+            })
+        }
+
+
+
+    })
+
 
     $("#my-checks-tags button").click(function() {
         // .active has not been updated yet by bootstrap code,
@@ -137,7 +175,12 @@ $(function () {
 
         // No checked tags: show all
         if (checked.length == 0) {
-            $("#checks-table tr.checks-row").show();
+            if ($("#filter-unresolved-btn button").hasClass("checked")){
+                $("#checks-table tr.checks-row").filter(".unresolved").show();
+            } else {
+                $("#checks-table tr.checks-row").show();
+            }
+            $("#checks-table tr.checks-row").removeClass("filtered");
             $("#checks-list > li").show();
             return;
         }
@@ -147,11 +190,18 @@ $(function () {
             for (var i=0, tag; tag=checked[i]; i++) {
                 if (tags.indexOf(tag) == -1) {
                     $(element).hide();
+                    $(element).addClass("filtered")
                     return;
                 }
             }
 
-            $(element).show();
+            if ($("#filter-unresolved-btn button").hasClass("checked")){
+                $(element).filter(".unresolved").show();
+            } else {
+                $(element).show();
+            }
+
+            $(element).removeClass("filtered");
         }
 
         // Desktop: for each row, see if it needs to be shown or hidden

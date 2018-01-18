@@ -15,10 +15,17 @@
         {% endif %}
         </h1>
     </div>
+    {% if down_checks_count %}
+    <div id="filter-unresolved-btn" class="col-sm-12">
+        <button class="btn btn-warning btn-s pull-right" data-toggle="button">Unresolved Checks ({{ down_checks_count }})</button>
+    </div>
+    {% endif %}
     {% if tags %}
     <div id="my-checks-tags" class="col-sm-12">
         {% for tag, count in tags %}
-            {% if tag in down_tags %}
+            {% if tag == "Unresolved-Checks" %}
+                <button class="btn btn-warning btn-xs pull-right" data-toggle="button">{{ tag }}</button>
+            {% elif tag in down_tags %}
                 <button class="btn btn-danger btn-xs" data-toggle="button">{{ tag }}</button>
             {% elif tag in grace_tags %}
                 <button class="btn btn-warning btn-xs" data-toggle="button">{{ tag }}</button>

@@ -33,9 +33,13 @@ def my_checks(request):
     checks = list(q)
 
     counter = Counter()
+    down_checks_count = 0
     down_tags, grace_tags = set(), set()
     for check in checks:
         status = check.get_status()
+        if status == "down":
+            check.tags += " Unresolved-Checks"
+            down_checks_count += 1
         for tag in check.tags_list():
             if tag == "":
                 continue
@@ -46,9 +50,9 @@ def my_checks(request):
                 down_tags.add(tag)
             elif check.in_grace_period():
                 grace_tags.add(tag)
-
     ctx = {
         "page": "checks",
+        'down_checks_count': down_checks_count,
         "checks": checks,
         "now": timezone.now(),
         "tags": counter.most_common(),

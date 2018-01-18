@@ -41,7 +41,9 @@
                 <th>Tags</th>
                 <td>
                     {% for tag in check.tags_list %}
+                    {% if tag != 'Unresolved-Checks'%}
                     <span class="label label-tag">{{ tag }}</span>
+                    {% endif %}
                     {% endfor %}
                 </td>
             </tr>
