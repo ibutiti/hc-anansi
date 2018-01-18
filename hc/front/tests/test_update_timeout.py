@@ -32,7 +32,7 @@ class UpdateTimeoutTestCase(BaseTestCase):
 
         check = Check.objects.get(code=self.check.code)
         assert check.nag.total_seconds() == 60
-    
+
     def test_nag_interval_validation_works(self):
         url = "/checks/%s/timeout/" % self.check.code
         payload = {"timeout": 3600, "grace": 60, "nag": 6}

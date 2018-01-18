@@ -303,10 +303,8 @@ $(function() {
 
     clipboard.on('error', function(e) {
         var text = e.trigger.getAttribute("data-clipboard-text");
-        prompt("Press Ctrl+C to select:", text);
-    }); 
-});
+        prompt("Press Ctrl+C to select:", text)
+    });
 
-$('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus')
-  })
+
+});
