@@ -35,6 +35,7 @@
                     class="my-checks-name {% if not check.name %}unnamed{% endif %}">
                 <div>{{ check.name|default:"unnamed" }}</div>
                 {% for tag in check.tags_list %}
+                <!-- Remove the tag from showing on the table -->
                 {% if tag != "Unresolved-Checks" %}
                 <span class="label label-tag">{{ tag }}</span>
                 {% endif %}

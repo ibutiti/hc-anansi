@@ -136,10 +136,6 @@ $(function () {
             $("tr.checks-row").each(function(index, element){
                 // if a check has the icon-down class, add the class unresolved
                 // which will be avoided by the tags filters
-                // if ($(this, "td > span.status").not(".icon-down").length > 0){
-                //     $(this).hide()
-                //     $(this).addClass("unresolved")
-                // }
                 $("span.icon-down", this).parent().parent().addClass("unresolved");
                 // if a check is not down, hide it
                 $(".status", this).not(".icon-down").parent().parent().hide();
@@ -175,6 +171,7 @@ $(function () {
 
         // No checked tags: show all
         if (checked.length == 0) {
+            // verify row has not been hidden by unresolved filter
             if ($("#filter-unresolved-btn button").hasClass("checked")){
                 $("#checks-table tr.checks-row").filter(".unresolved").show();
             } else {
@@ -190,12 +187,14 @@ $(function () {
             for (var i=0, tag; tag=checked[i]; i++) {
                 if (tags.indexOf(tag) == -1) {
                     $(element).hide();
+                    // add class filtered so they can be ignored by unresolved filter
                     $(element).addClass("filtered")
                     return;
                 }
             }
 
             if ($("#filter-unresolved-btn button").hasClass("checked")){
+                // if unresolved filter is still active, only show unresolved rows
                 $(element).filter(".unresolved").show();
             } else {
                 $(element).show();
