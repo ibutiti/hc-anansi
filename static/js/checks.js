@@ -123,11 +123,33 @@ $(function () {
         return false;
     });
 
+    $("button.clear-all").not(".unresolved").click(function() {
+        // show all rows in all checks, hidden or not
+        $("#checks-table tr.checks-row").show();
+        $("#checks-list > li").show();
 
-    $("#my-checks-tags button").click(function() {
+        // deactivate checks filter buttons in all tab
+        $("#my-checks-tags button").removeClass('checked');
+        $("#my-checks-tags button").removeClass('active');
+
+    });
+
+    $("button.clear-all.unresolved").click(function() {
+        // show all rows in unresolved checks, hidden or not
+        $("#unresolved-checks-table tr.checks-row").show();
+        $("#unresolved-checks-list > li").show();
+
+        // deactivate filter buttons in unresolved tab
+        $("#my-unresolved-checks-tags button").removeClass('checked');
+        $("#my-unresolved-checks-tags button").removeClass('active');
+
+    });
+
+    $("#my-checks-tags button").not(".clear-all").click(function() {
         // .active has not been updated yet by bootstrap code,
         // so cannot use it
-        $(this).toggleClass('checked');
+        $(this).toggleClass("checked");
+
 
         // Make a list of currently checked tags:
         var checked = [];
@@ -158,6 +180,44 @@ $(function () {
         $("#checks-table tr.checks-row").each(applyFilters);
         // Mobile: for each list item, see if it needs to be shown or hidden
         $("#checks-list > li").each(applyFilters);
+
+    });
+
+    $("#my-unresolved-checks-tags button").not(".clear-all").click(function() {
+        // tags filter for unresolved checks
+        // .active has not been updated yet by bootstrap code,
+        // so cannot use it
+        $(this).toggleClass("checked");
+
+        // Make a list of currently checked tags:
+        var checked = [];
+        $("#my-unresolved-checks-tags button.checked").each(function(index, el) {
+            checked.push(el.textContent);
+        });
+
+        // No checked tags: show all
+        if (checked.length == 0) {
+            $("#unresolved-checks-list > li").show();
+            $("#unresolved-checks-table tr.checks-row").show();
+            return;
+        }
+
+        function applyFilters(index, element) {
+            var tags = $(".my-checks-name", element).data("tags").split(" ");
+            for (var i=0, tag; tag=checked[i]; i++) {
+                if (tags.indexOf(tag) == -1) {
+                    $(element).hide();
+                    return;
+                }
+            }
+
+            $(element).show();
+        }
+
+        // Desktop: for each row, see if it needs to be shown or hidden
+        $("#unresolved-checks-table tr.checks-row").each(applyFilters);
+        // Mobile: for each list item, see if it needs to be shown or hidden
+        $("#unresolved-checks-list > li").each(applyFilters);
 
     });
 

@@ -1,92 +1,214 @@
 {% load hc_extras humanize %}
 
-<ul id="checks-list" class="visible-xs">
-    {% for check in checks %}
-    <li>
-        <h2>
-            <span class="{% if not check.name %}unnamed{% endif %}">
-                {{ check.name|default:"unnamed" }}
-            </span>
-
-            <code>{{ check.code }}</code>
-        </h2>
-
-        <a
-            href="#"
-            class="btn remove-link check-menu-remove"
-            data-name="{{ check.name_then_code }}"
-            data-url="{% url 'hc-remove-check' check.code %}">
-            <span class="icon-close"></span>
-        </a>
-
-        <table class="table">
-            <tr>
-                <th>Status</th>
-                <td>
-                    {% if check.get_status == "new" %}
-                        <span class="label label-default">NEW</span>
-                    {% elif check.get_status == "paused" %}
-                        <span class="label label-default">PAUSED</span>
-                    {% elif check.in_grace_period %}
-                        <span class="label label-warning">LATE</span>
-                    {% elif check.get_status == "up" %}
-                        <span class="label label-success">UP</span>
-                    {% elif check.get_status == "down" %}
-                        <span class="label label-danger">DOWN</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% if check.tags %}
-            <tr>
-                <th>Tags</th>
-                <td>
-                    {% for tag in check.tags_list %}
-                    <span class="label label-tag">{{ tag }}</span>
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th>Period</th>
-                <td>{{ check.timeout|hc_duration }}</td>
-            </tr>
-            <tr>
-                <th>Grace Time</th>
-                <td>{{ check.grace|hc_duration }}</td>
-            </tr>
-            <tr>
-                <th>Last Ping</th>
-                <td>
-                    {% if check.last_ping %}
-                        {{ check.last_ping|naturaltime }}
-                    {% else %}
-                        Never
-                    {% endif %}
-                </td>
-            </tr>
-        </table>
-
-
-        <div>
-            <a
-                href="#"
-                data-name="{{ check.name }}"
-                data-tags="{{ check.tags }}"
-                data-url="{% url 'hc-update-name' check.code %}"
-                class="btn btn-default my-checks-name">
-                Rename
-            </a>
-
-            <a
-                href="#"
-                data-url="{% url 'hc-update-timeout' check.code %}"
-                data-timeout="{{ check.timeout.total_seconds }}"
-                data-grace="{{ check.grace.total_seconds }}"
-                class="btn btn-default timeout-grace">Change Period</a>
-
-            <a href="{% url 'hc-log' check.code %}" class="btn btn-default">Log</a>
-        </div>
-
-    </li>
-    {% endfor %}
+<!-- Tabs navigation -->
+<ul class="nav nav-tabs visible-xs" role="tablist">
+  <li role="presentation" class="active"><a href="#all-checks-mobile" aria-controls="All" role="tab" data-toggle="tab">All</a></li>
+  <li role="presentation"><a href="#unresolved-checks-mobile" aria-controls="Unresolved" role="tab" data-toggle="tab">Unresolved</a></li>
 </ul>
+
+<!-- Tab panes -->
+  <div class="tab-content visible-xs">
+    <div role="tabpanel" class="tab-pane active" id="all-checks-mobile">
+        {% if tags %}
+        <br />
+        <div id="my-checks-tags" class="col-sm-12">
+            <button class="btn btn-info btn-xs clear-all">Clear Filters</button>
+            {% for tag, count in tags %}
+                {% if tag in down_tags %}
+                    <button class="btn btn-danger btn-xs" data-toggle="button">{{ tag }}</button>
+                {% elif tag in grace_tags %}
+                    <button class="btn btn-warning btn-xs" data-toggle="button">{{ tag }}</button>
+                {% else %}
+                    <button class="btn btn-default btn-xs" data-toggle="button">{{ tag }}</button>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <ul id="checks-list" class="visible-xs">
+            {% for check in checks %}
+            <li>
+                <h2>
+                    <span class="{% if not check.name %}unnamed{% endif %}">
+                        {{ check.name|default:"unnamed" }}
+                    </span>
+
+                    <code>{{ check.code }}</code>
+                </h2>
+
+                <a
+                    href="#"
+                    class="btn remove-link check-menu-remove"
+                    data-name="{{ check.name_then_code }}"
+                    data-url="{% url 'hc-remove-check' check.code %}">
+                    <span class="icon-close"></span>
+                </a>
+
+                <table class="table">
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if check.get_status == "new" %}
+                                <span class="label label-default">NEW</span>
+                            {% elif check.get_status == "paused" %}
+                                <span class="label label-default">PAUSED</span>
+                            {% elif check.in_grace_period %}
+                                <span class="label label-warning">LATE</span>
+                            {% elif check.get_status == "up" %}
+                                <span class="label label-success">UP</span>
+                            {% elif check.get_status == "down" %}
+                                <span class="label label-danger">DOWN</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if check.tags %}
+                    <tr>
+                        <th>Tags</th>
+                        <td>
+                            {% for tag in check.tags_list %}
+                            <span class="label label-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+
+                <div>
+                    <a
+                        href="#"
+                        data-name="{{ check.name }}"
+                        data-tags="{{ check.tags }}"
+                        data-url="{% url 'hc-update-name' check.code %}"
+                        class="btn btn-default my-checks-name">
+                        Rename
+                    </a>
+
+                    <a
+                        href="#"
+                        data-url="{% url 'hc-update-timeout' check.code %}"
+                        data-timeout="{{ check.timeout.total_seconds }}"
+                        data-grace="{{ check.grace.total_seconds }}"
+                        class="btn btn-default timeout-grace">Change Period</a>
+
+                    <a href="{% url 'hc-log' check.code %}" class="btn btn-default">Log</a>
+                </div>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+
+    <div role="tabpanel" class="tab-pane" id="unresolved-checks-mobile">
+        {% if down_tags %}
+        <br />
+        <div id="my-unresolved-checks-tags" class="col-sm-12">
+            <button class="btn btn-info btn-xs clear-all unresolved">Clear Filters</button>
+            {% for tag in down_tags %}
+                <button class="btn btn-danger btn-xs" data-toggle="button">{{ tag }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <ul id="unresolved-checks-list" class="visible-xs">
+            {% for check in unresolved_checks %}
+            <li>
+                <h2>
+                    <span class="{% if not check.name %}unnamed{% endif %}">
+                        {{ check.name|default:"unnamed" }}
+                    </span>
+
+                    <code>{{ check.code }}</code>
+                </h2>
+
+                <a
+                    href="#"
+                    class="btn remove-link check-menu-remove"
+                    data-name="{{ check.name_then_code }}"
+                    data-url="{% url 'hc-remove-check' check.code %}">
+                    <span class="icon-close"></span>
+                </a>
+
+                <table class="table">
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <span class="label label-danger">DOWN</span>
+                        </td>
+                    </tr>
+                    {% if check.tags %}
+                    <tr>
+                        <th>Tags</th>
+                        <td>
+                            {% for tag in check.tags_list %}
+                            <span class="label label-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+
+                <div>
+                    <a
+                        href="#"
+                        data-name="{{ check.name }}"
+                        data-tags="{{ check.tags }}"
+                        data-url="{% url 'hc-update-name' check.code %}"
+                        class="btn btn-default my-checks-name">
+                        Rename
+                    </a>
+
+                    <a
+                        href="#"
+                        data-url="{% url 'hc-update-timeout' check.code %}"
+                        data-timeout="{{ check.timeout.total_seconds }}"
+                        data-grace="{{ check.grace.total_seconds }}"
+                        class="btn btn-default timeout-grace">Change Period</a>
+
+                    <a href="{% url 'hc-log' check.code %}" class="btn btn-default">Log</a>
+                </div>
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+  </div>
