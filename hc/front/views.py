@@ -31,6 +31,7 @@ def pairwise(iterable):
 def my_checks(request):
     q = Check.objects.filter(user=request.team.user).order_by("created")
     checks = list(q)
+    unresolved_checks = []
 
     counter = Counter()
     down_tags, grace_tags = set(), set()
@@ -44,6 +45,7 @@ def my_checks(request):
 
             if status == "down":
                 down_tags.add(tag)
+                unresolved_checks.append(check)
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
@@ -51,6 +53,7 @@ def my_checks(request):
         "page": "checks",
         "checks": checks,
         "now": timezone.now(),
+        "unresolved_checks": unresolved_checks,
         "tags": counter.most_common(),
         "down_tags": down_tags,
         "grace_tags": grace_tags,
