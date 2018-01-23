@@ -58,3 +58,35 @@ class MyChecksTestCase(BaseTestCase):
 
         # Mobile
         self.assertContains(r, "label-warning")
+
+    def test_it_shows_unresolved_check(self):
+        '''Check that an unresolved check tab, table and list appear when
+        there is an unresolved check'''
+        self.check.last_ping = timezone.now() - td(days=3)
+        self.check.status = "up"
+        self.check.save()
+
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get("/checks/")
+
+        # Check it contains the unresolved checks tab id
+        self.assertContains(response, 'id="unresolved-checks"')
+
+        # Desktop
+        self.assertContains(response, "unresolved-checks-table")
+
+        # Mobile
+        self.assertContains(response, "unresolved-checks-list")
+
+    def test_it_shows_no_unresolved_check_message(self):
+        '''Check that no unresolved checks message is shown if user has
+        no unresolved checks'''
+        self.check.last_ping = timezone.now() - td(days=1)
+        self.check.status = "up"
+        self.check.save()
+
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get("/checks/")
+
+        # Check it contains the unresolved checks tab id
+        self.assertContains(response, "You don't have any unresolved checks")

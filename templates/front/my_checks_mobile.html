@@ -120,6 +120,7 @@
 
 
     <div role="tabpanel" class="tab-pane" id="unresolved-checks-mobile">
+        {% if unresolved_checks %}
         {% if down_tags %}
         <br />
         <div id="my-unresolved-checks-tags" class="col-sm-12">
@@ -209,6 +210,9 @@
             </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <div class="text-center alert alert-info">You don't have any unresolved checks.</div>
+        {% endif %}
     </div>
 
   </div>
