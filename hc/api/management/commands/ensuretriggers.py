@@ -43,7 +43,7 @@ def _sqlite(cursor):
 
     cursor.execute("""
     CREATE TRIGGER update_alert_after
-    AFTER UPDATE OF last_ping, timeout, grace ON api_check
+    AFTER UPDATE OF last_ping, timeout, grace, nag ON api_check
     FOR EACH ROW BEGIN
         UPDATE api_check
         SET alert_after =
