@@ -187,9 +187,14 @@
                                     </li>
                                     <li role="separator" class="divider"></li>
                                     <li>
+                                        <a href="#" data-url="{% url 'hc-update-timeout' check.code %}" class="job-priorities">
+                                                Set Priority
+                                            </a>
+                                    </li>
+                                    <li>
                                         <a href="{% url 'hc-log' check.code %}">
-                                    Log
-                                </a>
+                                            Log
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="#" class="usage-examples" data-url="{{ check.url }}" data-email="{{ check.email }}">

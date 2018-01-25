@@ -23,7 +23,8 @@
 }
 
 #period-slider,
-#nag-slider {
+#nag-slider,
+#priority-slider {
     margin: 20px 50px 80px 50px;
 }
 
@@ -41,7 +42,8 @@
 
 #period-slider .noUi-value,
 #grace-slider .noUi-value,
-#nag-slider .noUi-value {
+#nag-slider .noUi-value,
+#priority-slider .noUi-value {
     width: 60px;
     margin-left: -30px;
 }
@@ -70,4 +72,13 @@
 
 #show-usage-modal .tab-content {
     margin-top: 15px;
+}
+
+.escalation {
+    margin: 0 auto;
+    margin-top: 5em;
+    width: 84%;
+    display: grid;
+    grid-template-columns: auto 30%;
+    grid-gap: 1em;
 }
