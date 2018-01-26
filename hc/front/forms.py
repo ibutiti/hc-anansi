@@ -28,6 +28,12 @@ class TimeoutForm(forms.Form):
     nag = forms.IntegerField(min_value=min_time, max_value=max_time)
 
 
+class PriorityForm(forms.Form):
+    """Form to accept check priority and escalation emails"""
+    escalation_emails = forms.CharField(max_length=500, required=False)
+    priority = forms.IntegerField(min_value=-2, max_value=2)
+
+
 class AddChannelForm(forms.ModelForm):
 
     class Meta:

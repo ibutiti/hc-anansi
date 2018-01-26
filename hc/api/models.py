@@ -49,6 +49,8 @@ class Check(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     timeout = models.DurationField(default=DEFAULT_TIMEOUT)
     grace = models.DurationField(default=DEFAULT_GRACE)
+    priority = models.IntegerField(default=0, min_value=-2, max_value=2)
+    escalation_emails = models.CharField(blank=True, null=True)
     nag = models.DurationField(default=DEFAULT_NAG)
     nag_status = models.BooleanField(default=False)
     n_pings = models.IntegerField(default=0)

@@ -303,6 +303,23 @@ def update_name(request, code):
 
 @login_required
 @uuid_or_400
+def set_check_priority(request, code):
+    """Receives the check priority form and saves check priority to db"""
+    assert request.method == 'POST'
+
+    check = get_object_or_404(Check, code=code)
+    if check.user != request.team.user:
+        return HttpResponseForbidden()
+
+    form = PriorityForm(request.POST)
+    if form.is_valid():
+        check.priority = form.cleaned_data["priority"]
+        check.escalation_emails = form.cleaned_data["escalation_emails"]
+    return redirect("hc-checks")
+
+
+@login_required
+@uuid_or_400
 def update_timeout(request, code):
     assert request.method == "POST"
 
