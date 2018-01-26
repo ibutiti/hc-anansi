@@ -17,7 +17,6 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 HOST = "localhost"
-SITE_ROOT = os.environ.get("SITE_ROOT")
 SECRET_KEY = "---"
 DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'hc-anansi-staging.herokuapp.com',
@@ -100,7 +99,7 @@ if os.environ.get("DB") == "postgres":
         'default': {
             'ENGINE':   'django.db.backends.postgresql',
             'NAME':     'hc',
-            'USER':     'postgres',
+            'USER':     'allan',
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
@@ -132,7 +131,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-SITE_ROOT = "http://localhost:8000"
+SITE_ROOT = os.environ.get("SITE_ROOT")
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
