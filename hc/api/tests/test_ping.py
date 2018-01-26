@@ -1,5 +1,7 @@
+from datetime import timedelta
 from django.test import Client, TestCase
 from django.urls import reverse
+from django.utils import timezone
 from hc.api.models import Check, Ping
 
 
@@ -106,3 +108,38 @@ class PingTestCase(TestCase):
         csrf_client = Client(enforce_csrf_checks=True)
         response = csrf_client.head(reverse("hc-ping", args=[self.check.code]))
         self.assertEqual(response.status_code, 200)
+
+    # Test that a check that runs too often is flagged
+    def test_it_flags_checks_that_run_too_often(self):
+        """Checks should not run too often"""
+        # Create test check
+        test_check = Check.objects.create()
+        # Ping check to change it's status to "UP"
+        response = self.client.get(
+            reverse("hc-ping", args=[test_check.code])
+        )
+        self.assertEqual(response.status_code, 200)
+        test_check.refresh_from_db()
+        # Ping check to change trigger often state
+        response = self.client.get(
+            reverse("hc-ping", args=[test_check.code])
+        )
+        self.assertEqual(response.status_code, 200)
+        test_check.refresh_from_db()
+        self.assertEqual(test_check.status, "up")
+        self.assertEqual(test_check.often, True)
+        # Assert that is check is ran after the reverse grace "Often" reverts to "False".
+        reverse_grace = test_check.timeout - test_check.grace
+        # set the last ping to an appropriate time after the reverse grace but before the
+        # timeout
+        test_check.last_ping = timezone.now() - reverse_grace - timedelta(minutes=30)
+        test_check.save()
+        response = self.client.get(
+            reverse("hc-ping", args=[test_check.code])
+        )
+        test_check.refresh_from_db()
+        self.assertEqual(response.status_code, 200)
+        # Assert that the check is still up
+        self.assertEqual(test_check.status, "up")
+        # Assert that the often property is now False
+        self.assertEqual(test_check.often, False)

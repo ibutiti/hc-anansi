@@ -32,10 +32,10 @@
                     <span class="{% if not check.name %}unnamed{% endif %}">
                         {{ check.name|default:"unnamed" }}
                     </span>
-
+        
                     <code>{{ check.code }}</code>
                 </h2>
-
+        
                 <a
                     href="#"
                     class="btn remove-link check-menu-remove"
@@ -43,7 +43,7 @@
                     data-url="{% url 'hc-remove-check' check.code %}">
                     <span class="icon-close"></span>
                 </a>
-
+        
                 <table class="table">
                     <tr>
                         <th>Status</th>
@@ -57,20 +57,124 @@
                             {% elif check.get_status == "up" %}
                                 <span class="label label-success">UP</span>
                             {% elif check.get_status == "down" %}
-                                <span class="label label-danger">DOWN</span>
+                        <span class="label label-danger">DOWN</span>
+                    {% elif check.often %}
+                        <span class="label label-primary">OFTEN</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if check.tags %}
+            <tr>
+                <th>Tags</th>
+                <td>
+                    {% for tag in check.tags_list %}
+                    <span class="label label-tag">{{ tag }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Period</th>
+                <td>{{ check.timeout|hc_duration }}</td>
+            </tr>
+            <tr>
+                <th>Grace Time</th>
+                <td>{{ check.grace|hc_duration }}</td>
+            </tr>
+            <tr>
+                <th>Last Ping</th>
+                <td>
+                    {% if check.last_ping %}
+                        {{ check.last_ping|naturaltime }}
+                    {% else %}
+                        Never
+                    {% endif %}
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
                             {% endif %}
                         </td>
                     </tr>
-                    {% if check.tags %}
                     <tr>
-                        <th>Tags</th>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
                         <td>
-                            {% for tag in check.tags_list %}
-                            <span class="label label-tag">{{ tag }}</span>
-                            {% endfor %}
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
                         </td>
                     </tr>
-                    {% endif %}
+                    <tr>
+                        <th>Period</th>
+                        <td>{{ check.timeout|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Grace Time</th>
+                        <td>{{ check.grace|hc_duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Ping</th>
+                        <td>
+                            {% if check.last_ping %}
+                                {{ check.last_ping|naturaltime }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
                     <tr>
                         <th>Period</th>
                         <td>{{ check.timeout|hc_duration }}</td>
@@ -165,6 +269,23 @@
                             {% endfor %}
                         </td>
                     </tr>
+
+            {% endif %}
+            <tr>
+                <th>Period</th>
+                <td>{{ check.timeout|hc_duration }}</td>
+            </tr>
+            <tr>
+                <th>Grace Time</th>
+                <td>{{ check.grace|hc_duration }}</td>
+            </tr>
+            <tr>
+                <th>Last Ping</th>
+                <td>
+                    {% if check.last_ping %}
+                        {{ check.last_ping|naturaltime }}
+                    {% else %}
+                        Never
                     {% endif %}
                     <tr>
                         <th>Period</th>
