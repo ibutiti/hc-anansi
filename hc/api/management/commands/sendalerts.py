@@ -47,8 +47,9 @@ class Command(BaseCommand):
         if check.status == "down":
             check.nag_after = timezone.now() + check.nag
             check.nag_status = True
-            
+
         check.save()
+
 
         if check.status == "down":
             check.save()
