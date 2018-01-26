@@ -16,7 +16,8 @@ import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-HOST = os.environ.get("SITE_HOST")
+HOST = localhost
+SITE_ROOT = os.environ.get("SITE_ROOT")
 SECRET_KEY = "---"
 DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'hc-anansi-staging.herokuapp.com',
