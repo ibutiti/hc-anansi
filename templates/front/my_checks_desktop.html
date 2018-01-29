@@ -27,6 +27,8 @@
                     <th class="th-period">
                         Period <br />
                         <span class="checks-subline">Grace</span>
+                        <br>
+                        <span class="checks-subline">Nag</span>
                     </th>
                     <th>Last Ping</th>
                     <th></th>
@@ -41,7 +43,9 @@
                         {% if check.often %}<span style="color: #d9994f; font-size: 24px;"><i class="fa fa-clock-o" aria-hidden="true"></i></i></span>
                         {% else %}<span class="status icon-up"></span>{% endif %}
                         <span class="status icon-up"></span> {% elif check.get_status == "down" %}
-                        <span class="status icon-down"></span><span class="status icon-down"></span> {% endif %}
+                        <span class="status icon-down"></span>
+                        <span style="color: #22bc66; font-size: 21px;"><i class="fa fa-bell" aria-hidden="true"></i></i>
+                        </span> {% endif %}
                     </td>
                     <td class="name-cell">
                         <div data-name="{{ check.name }}" data-tags="{{ check.tags }}" data-url="{% url 'hc-update-name' check.code %}" class="my-checks-name {% if not check.name %}unnamed{% endif %}">
@@ -64,6 +68,10 @@
                         <br />
                         <span class="checks-subline">
                         {{ check.grace|hc_duration }}
+                        </span>
+                        <br>
+                        <span class="checks-subline">
+                        {{ check.nag|hc_duration }}
                         </span>
                         </span>
                     </td>
