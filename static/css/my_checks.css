@@ -79,7 +79,7 @@
     margin-top: 5em;
     width: 84%;
     display: grid;
-    grid-template-columns: auto 30%;
+    grid-template-columns: 10% auto 30%;
     grid-gap: 1em;
 }
 

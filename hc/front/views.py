@@ -60,7 +60,7 @@ def create_blog(request):
                 ctg.save()
                 return redirect(create_blog)
         elif 'create_blog' in request.POST and form.is_valid():
-                title = request.POST['title'] 
+                title = request.POST['title']
                 blog = form.cleaned_data['content']
                 selected_category = request.POST['category_name']
                 category = Category.objects.get(name=selected_category)
@@ -136,10 +136,14 @@ def edit_blog(request, pk):
 
 @login_required
 def my_checks(request):
-    q = Check.objects.filter(user=request.team.user).order_by("created")
+    q = Check.objects.filter(user=request.team.user).order_by("-priority",
+                                                              "created")
     checks = list(q)
     # create a list of unresolved checks
     unresolved_checks = []
+    # add queryset of email channels to context
+    channels = Channel.objects.filter(user=request.team.user,
+                                      kind="email").order_by("created")
 
     counter = Counter()
     down_tags, grace_tags = set(), set()
@@ -162,6 +166,7 @@ def my_checks(request):
     ctx = {
         "page": "checks",
         "checks": checks,
+        "channels": channels,
         "now": timezone.now(),
         # pass unresolved checks list to context
         "unresolved_checks": unresolved_checks,
@@ -236,7 +241,7 @@ def docs_faq(request):
     """
     all_faqs = Faq.objects.all()
     faqs = list(all_faqs)
-    
+
     ctx = {
         "page": "docs",
         "section": "faq",
@@ -303,7 +308,7 @@ def update_name(request, code):
 
 @login_required
 @uuid_or_400
-def set_check_priority(request, code):
+def update_priority(request, code):
     """Receives the check priority form and saves check priority to db"""
     assert request.method == 'POST'
 
@@ -315,6 +320,7 @@ def set_check_priority(request, code):
     if form.is_valid():
         check.priority = form.cleaned_data["priority"]
         check.escalation_emails = form.cleaned_data["escalation_emails"]
+        check.save()
     return redirect("hc-checks")
 
 

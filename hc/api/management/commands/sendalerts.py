@@ -63,6 +63,17 @@ class Command(BaseCommand):
         connection.close()
         return True
 
+    def escalate_email(self, check):
+        tmpl = "\nSending alert, status=%s, code=%s\n"
+        self.stdout.write(tmpl % (check.status, check.code))
+        errors = check.send_alert()
+        for ch, error in errors:
+            self.stdout.write("ERROR: %s %s %s\n" % (
+                'email', check.escalation_emails, error))
+
+        connection.close()
+        return True
+
     def handle(self, *args, **options):
         self.stdout.write("sendalerts is now running")
 

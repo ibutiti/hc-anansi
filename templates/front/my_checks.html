@@ -137,9 +137,9 @@
 
 <div id="set-priority-modal" class="modal">
     <div class="modal-dialog">
-        <form id="set-priority-form" method="post">
+        <form id="set-priority-form" method="post" action="">
             {% csrf_token %}
-            <input type="hidden" name="priority" id="job-priority" />
+            <input type="hidden" name="priority" id="check-priority" />
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="job-timeout-info text-center">
@@ -152,15 +152,30 @@
                     </div>
                     <div id="priority-slider"></div>
                     <div class="escalation-list"></div>
+                    <span class="escalation-emails-label" data-toggle="tooltip" title="Enter email(s) to escalate notifications to when a job goes down and is not resolved.">
+                        Escalation Email Addresses</span>
                     <div class="escalation">
-                        <input type="text" data-role="tagsinput" name="email" id="escalation-emails" placeholder="email">
-                        <button type="button" id="escalate" class="btn btn-primary">Add</button>
+                        <input type="checkbox" id="check-priority-toggle" checked data-toggle="toggle" data-style="check-priority-toggle-x" data-on="High" data-off="Low" data-onstyle="danger" data-width="30px">
+                        <select class="escalation-select" name="escalation_emails">
+                            <option value="">select email</option>
+                            {% for channel in channels %}
+                            <option value="{{channel.value}}">
+                                {{channel.value}}
+                                {% if not channel.email_verified %}
+                                    <span class="channel-unconfirmed">(unconfirmed)</span>
+                                {% endif %}
+                            </option>
+                            {% endfor %}
+
+
+                        </select>
+                        <!-- <input type="text" data-role="tagsinput" name="escalation_emails" id="escalation-emails" placeholder="Emails (Separated by commas)"> -->
+                        <button type="submit" id="escalate" class="btn btn-primary">Add</button>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </form>

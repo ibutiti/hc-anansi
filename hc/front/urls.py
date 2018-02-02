@@ -6,6 +6,7 @@ check_urls = [
     url(r'^name/$', views.update_name, name="hc-update-name"),
     url(r'^timeout/$', views.update_timeout, name="hc-update-timeout"),
     url(r'^pause/$', views.pause, name="hc-pause"),
+    url(r'^priority/$', views.update_priority, name="hc-update-priority"),
     url(r'^remove/$', views.remove_check, name="hc-remove-check"),
     url(r'^log/$', views.log, name="hc-log"),
 ]

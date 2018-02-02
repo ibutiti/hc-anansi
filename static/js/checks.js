@@ -277,6 +277,12 @@ $(function() {
         return false;
     });
 
+    $(".check-priority").click(function(e) {
+        var url = e.target.getAttribute("data-url");
+        $("#set-priority-form").attr("action", url);
+        return false;
+    });
+
 
     $(".usage-examples").click(function(e) {
         var a = e.target;
