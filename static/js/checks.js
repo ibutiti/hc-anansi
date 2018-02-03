@@ -216,12 +216,12 @@ $(function() {
 
         function applyFilters(index, element) {
             var tags = $(".my-checks-name", element).data("tags").split(" ");
-            $.each(checked, function(key, value) {
-                if (key == -1) {
+            for (var i = 0, tag; tag = checked[i]; i++) {
+                if (tags.indexOf(tag) == -1) {
                     $(element).hide();
                     return;
                 }
-            });
+            }
 
             $(element).show();
         }

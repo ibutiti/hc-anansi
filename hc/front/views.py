@@ -319,7 +319,7 @@ def update_priority(request, code):
     form = PriorityForm(request.POST)
     if form.is_valid():
         check.priority = form.cleaned_data["priority"]
-        check.escalation_emails = form.cleaned_data["escalation_emails"]
+        check.escalation_email = form.cleaned_data["escalation_email"]
         check.save()
     return redirect("hc-checks")
 

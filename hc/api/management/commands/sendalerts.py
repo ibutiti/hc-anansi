@@ -64,12 +64,12 @@ class Command(BaseCommand):
         return True
 
     def escalate_email(self, check):
-        tmpl = "\nSending alert, status=%s, code=%s\n"
+        tmpl = "\nSending escalation alert, status=%s, code=%s\n"
         self.stdout.write(tmpl % (check.status, check.code))
-        errors = check.send_alert()
+        errors = check.send_escalation_alert(check.escalation_email)
         for ch, error in errors:
             self.stdout.write("ERROR: %s %s %s\n" % (
-                'email', check.escalation_emails, error))
+                'email', check.escalation_email, error))
 
         connection.close()
         return True

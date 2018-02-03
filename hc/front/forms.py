@@ -30,7 +30,7 @@ class TimeoutForm(forms.Form):
 
 class PriorityForm(forms.Form):
     """Form to accept check priority value and escalation emails"""
-    escalation_emails = forms.CharField(max_length=500, required=False)
+    escalation_email = forms.CharField(max_length=500, required=False)
     priority = forms.IntegerField(min_value=-2, max_value=2)
 
 
