@@ -146,10 +146,19 @@
                     Set Check Priority and Escalation Email
                 </div>
                 <div class="modal-body">
+                    <div class="update-timeout-info text-center">
+                        <span class="update-timeout-label">
+                            Priority
+                        </span>
+                        <span id="priority-slider-value" class="update-priority-value">
+                            1
+                        </span>
+                    </div>
+
+                    <div id="priority-slider"></div>
                     <div class="escalation">
-                        <input type="checkbox" id="check-priority-toggle" checked data-toggle="toggle" data-style="check-priority-toggle-x" data-on="High" data-off="Low" data-onstyle="danger" data-width="30px">
                         <select class="escalation-select" id="escalation-select" name="escalation_email">
-                            <option value="">select email</option>
+                            <option id="default-email" value="">select email</option>
                             {% for channel in channels %}
                             <option value="{{channel.value}}">
                                 {{channel.value}}

@@ -38,7 +38,7 @@ class Transport(object):
         raise NotImplementedError()
 
     def checks(self):
-        return self.channel.user.check_set.order_by("created")
+        return self.channel.user.check_set.order_by("-priority", "created")
 
 
 class Email(Transport):

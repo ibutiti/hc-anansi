@@ -93,8 +93,10 @@ class Check(models.Model):
 
         errors = []
         # verify escalation email is verified
-        verified = self.channel_set.filter(value=escalation_email,
-                                           email_verified=True).first()
+
+        verified = Channel.objects.filter(value=escalation_email,
+                                          email_verified=True).first()
+
         if verified:
             error = verified.notify(self)
             if error not in ("", "no-op"):
