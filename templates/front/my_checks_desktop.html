@@ -44,7 +44,7 @@
                         {% else %}<span class="status icon-up"></span>{% endif %}
                         <span class="status icon-up"></span> {% elif check.get_status == "down" %}
                         <span class="status icon-down"></span>
-                        <span style="color: #22bc66; font-size: 21px;"><i class="fa fa-bell" aria-hidden="true"></i></i>
+                        <span style="color: #FFFF00; font-size: 21px;"><i class="fa fa-bell" aria-hidden="true"></i></i>
                         </span> {% endif %}
                     </td>
                     <td class="name-cell">
@@ -142,7 +142,8 @@
                     <th>Ping URL</th>
                     <th class="th-period">
                         Period <br />
-                        <span class="checks-subline">Grace</span>
+                        <span class="checks-subline">Grace</span><br />
+                        <span class="checks-subline">Nag</span>
                     </th>
                     <th>Last Ping</th>
                     <th></th>
@@ -151,7 +152,17 @@
                 {% for check in unresolved_checks %}
                 <tr class="checks-row">
                     <td class="indicator-cell">
-                        <span class="status icon-down"></span>
+                      {% if check.get_status == "new" %}
+                      <span class="status icon-up new" data-toggle="tooltip" title="New. Has never received a ping."></span> {% elif check.get_status == "paused" %}
+                      <span class="status icon-paused" data-toggle="tooltip" title="Monitoring paused. Ping to resume."></span> {% elif check.in_grace_period %}
+                      <span class="status icon-grace"></span> {% elif check.get_status == "up" %} {% if check.often %}
+                      <span style="color: #d9994f; font-size: 24px;"><i class="fa fa-clock-o" aria-hidden="true"></i></i>
+                      </span> {% else %}
+                      <span class="status icon-up"></span> {% endif %}
+                      <span class="status icon-up"></span> {% elif check.get_status == "down" %}
+                      <span class="status icon-down"></span>
+                      <span style="color: #FFFF00; font-size: 20px;"><i class="fa fa-bell" aria-hidden="true"></i></i>
+                      </span> {% endif %}
                     </td>
                     <td class="name-cell">
                         <div data-name="{{ check.name }}" data-tags="{{ check.tags }}" data-url="{% url 'hc-update-name' check.code %}" class="my-checks-name {% if not check.name %}unnamed{% endif %}">
@@ -174,6 +185,9 @@
                         <br />
                         <span class="checks-subline">
                         {{ check.grace|hc_duration }}
+                        </span>
+                        <span class="checks-subline">
+                        {{ check.nag|hc_duration }}
                         </span>
                         </span>
                     </td>
