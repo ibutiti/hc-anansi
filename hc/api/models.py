@@ -50,7 +50,7 @@ class Check(models.Model):
     timeout = models.DurationField(default=DEFAULT_TIMEOUT)
     grace = models.DurationField(default=DEFAULT_GRACE)
     priority = models.IntegerField(default=0)
-    escalation_email = models.CharField(blank=True, null=True, max_length=500)
+    escalation_email = models.CharField(blank=True, null=True, max_length=140)
     nag = models.DurationField(default=DEFAULT_NAG)
     nag_status = models.BooleanField(default=False)
     n_pings = models.IntegerField(default=0)
