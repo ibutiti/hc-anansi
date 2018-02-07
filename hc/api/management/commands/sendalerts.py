@@ -50,18 +50,37 @@ class Command(BaseCommand):
 
         check.save()
 
+        if not (check.status == "down" and check.priority > 0 and
+                check.escalation_email):
+            print("Email not escalated")
+            tmpl = "Sending normal alert, status={}, code={}"
+            print(tmpl.format(check.status, check.code))
+            errors = check.send_alert()
+            for ch, error in errors:
+                print(("ERROR: {} {} {}").format(ch.kind, ch.value, error))
+            connection.close()
+            return True
+        else:
 
-        if check.status == "down":
-            check.save()
+            tmpl = "Sending escalation alert, status={}, code={}"
+            print(tmpl.format(check.status, check.code))
+            errors = check.send_escalation_alert(check.escalation_email)
+            for ch, error in errors:
+                print("ERROR: {} {} {}".format('email',
+                                                 check.escalation_email, error))
 
-        tmpl = "\nSending alert, status=%s, code=%s\n"
-        self.stdout.write(tmpl % (check.status, check.code))
-        errors = check.send_alert()
-        for ch, error in errors:
-            self.stdout.write("ERROR: %s %s %s\n" % (ch.kind, ch.value, error))
+            connection.close()
+            print("Email notification escalated")
 
-        connection.close()
-        return True
+            tmpl = "Sending normal alert, status={}, code={}"
+            print(tmpl.format(check.status, check.code))
+            errors = check.send_alert()
+            for ch, error in errors:
+                print(("ERROR: {} {} {}").format(ch.kind,
+                                                 ch.value, error))
+
+            connection.close()
+            return True
 
     def handle(self, *args, **options):
         print("sendalerts is now running")

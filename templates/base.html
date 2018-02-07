@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/nouislider.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/nouislider.pips.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/jquery.tagsinput.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/docs.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/welcome.css' %}" type="text/css">
@@ -68,66 +67,12 @@
                 {% endif %}
             </a>
 
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul id="nav-main-sections" class="nav navbar-nav">
-                {% if request.user.is_authenticated %}
-                    <li {% if page == 'checks' %} class="active" {% endif %}>
-                        <a href="{% url 'hc-checks' %}">Checks</a>
-                    </li>
-
-                    <li {% if page == 'channels' %} class="active" {% endif %}>
-                        <a href="{% url 'hc-channels' %}">Integrations</a>
-                    </li>
-
-                {% endif %}
-
-
-                {% if show_pricing %}
-                <li {% if page == 'pricing' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-pricing' %}">Pricing</a>
-                </li>
-                {% endif %}
-
-                <li {% if page == 'docs' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-docs' %}">Docs</a>
-                </li>
-
-                <li {% if page == 'about' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-about' %}">About</a>
-                </li>
-                <li {% if page == 'blog' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-blog' filter_by=0%}">Blog</a>
-                </li>
-            </ul>
-
-
-            {% if request.user.is_authenticated %}
-            {% else %}
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'hc-login' %}">Log In</a></li>
-            </ul>
-            {% endif %}
-
-            {% if request.user.is_authenticated %}
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a id="nav-email" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        {{ request.team }} <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% if request.teams %}
-                        <li class="dropdown-header">{{ request.user.profile }}</li>
-                        <li>
-                            <a href="{% url 'hc-switch-team' request.user.username %}" class="active">Checks</a>
-                        </li>
-                        {% endif %}
-
-                        <li><a href="{% url 'hc-profile' %}">Account Settings</a></li>
-                        <li role="separator" class="divider"></li>
-
-                        {% for team in request.teams %}
-                        <li class="dropdown-header">{{ team }}</li>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul id="nav-main-sections" class="nav navbar-nav">
+                    {% if request.user.is_authenticated %} {% if page == 'checks' %}
+                    <li class="active">
+                        {% else %}
                         <li>
                             {% endif %}
                             <a href="{% url 'hc-checks' %}">Checks</a>
@@ -206,7 +151,6 @@
 
         </div>
     </nav>
-
     {% block containers %}
     <div class="container">
         {% block content %}{% endblock %}
@@ -236,7 +180,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
     <script src="https://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
     <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
     {% endcompress %}
     {% endblock %}
     <!-- Session user email for Live Chat ID -->
@@ -245,7 +188,7 @@
     </script>
     <!-- olark widget -->
     <script src="{% static 'js/olark.js' %}"></script>
-    {% endcompress %} {% endblock %}
+    
 </body>
 </html>
 

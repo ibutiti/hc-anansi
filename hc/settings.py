@@ -105,7 +105,7 @@ if os.environ.get("DB") == "postgres":
         'default': {
             'ENGINE':   'django.db.backends.postgresql',
             'NAME':     'hc',
-            'USER':     'postgres',
+            'USER':     'allan',
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
@@ -153,7 +153,7 @@ COMPRESS_OFFLINE = True
 
 DJMAIL_REAL_BACKEND = "djmail.backends.async.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
