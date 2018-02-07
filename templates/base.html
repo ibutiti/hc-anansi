@@ -110,6 +110,9 @@
 
                                             <a href="{% url 'hc-about' %}">About</a>
                                         </li>
+                                        <li {% if page == 'blog' %} class="active" {% endif %}>
+                    <a href="{% url 'hc-blog' filter_by=0%}">Blog</a>
+                </li>
                 </ul>
 
 
@@ -188,7 +191,7 @@
     </script>
     <!-- olark widget -->
     <script src="{% static 'js/olark.js' %}"></script>
-    
+
 </body>
 </html>
 
