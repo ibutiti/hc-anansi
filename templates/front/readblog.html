@@ -25,7 +25,7 @@
                     <li role="presentation" class="dropdown">
                     </li>
                 </ul>
-            </div>        
+            </div>
         </div>
 </div>
 <main role="main" class="container">
@@ -38,9 +38,9 @@
             <h2 class="blog-post-title" style="font-weight:bold; font-size:35px; font-family:'Abel',sans-serif;">{{ blog.title }}</h2>
             <p class="blog-post-meta">{{ blog.published }} by <a href="#">{{ blog.user.email }}</a>
 
-            {% if request.user.id == blog.user.id %}    
+            {% if request.user.id == blog.user.id %}
             <a href="{% url 'hc-edit_blog' pk=blog.id %}"><i class="fa fa-edit" style="font-size:24px"></i></a>
-            <a href="{% url 'hc-delete_blog' pk=blog.id %}"><i class="fa fa-trash" name="delete" style="font-size:24px"></i></a>  
+            <a href="{% url 'hc-delete_blog' pk=blog.id %}"><i class="fa fa-trash" name="delete" style="font-size:24px"></i></a>
             {% endif %}
 
             </p>
@@ -48,7 +48,7 @@
         <div class="markdown" style="font-size: large;">
             {{ blog.content }}
         </div><br>
-        
+
         {% if request.user.is_authenticated %}
         <form method="POST"> {% csrf_token %}
         <label for="title" style="font-family:'Abel',sans-serif;">Responses:</label><br>
@@ -57,8 +57,8 @@
         </form>
         {% endif %}
 
-        {% for comment in comments %}   
-        <div class="comments">  
+        {% for comment in comments %}
+        <div class="comments">
             <div class="comment-header">
                 Response by {{ comment.user.email }}<br>
                 {{ comment.published }}
@@ -71,14 +71,14 @@
     </div>
     <aside class="col-md-4 blog-sidebar" align="center">
         <div>
-        
+
         <div class="share" style="margin-left:90px;">
             <h4 class="pb-3 mb-4 font-italic border-bottom">Share</h4>
             <a target="_blank"  href="https://twitter.com/intent/tweet?text={{blog.title}}&url={{tweet_url}}&hashtags=HealthChecks" class="fa fa-twitter"></a>
-            <a target="_blank" href="http://www.linkedin.com/shareArticle?url=http://localhost:8000{{ request.get_full_path|urlencode }}&title={{ blog.title }}&summary={{ blog.content }}&source=http://localhost:8000" class="fa fa-linkedin"></a>
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?url=hc-anansi-staging.herokuapp.com{{ request.get_full_path|urlencode }}&title={{ blog.title }}&summary={{ blog.content }}&source=https://hc-anansi-staging.herokuapp.com" class="fa fa-linkedin"></a>
             <a class="btn fa fa-clipboard" style="background: #1b729b; color: white;"></a><br>
         </div>
-        
+
         <div class=" featured-blog-item" style="margin-left:25px;">
             <h3 class="font-italic" style="text-align:center;">Featured article</h3>
             <img class="card-img-top img-responsive" src="https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2016-07-07/57802419554_47decd25da0b63135665_512.png" alt="Card image cap" style="height:120px; width:120px;">

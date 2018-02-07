@@ -4,12 +4,11 @@ $(function(){
         var markedContent = marked(blogContent);
         $(this).html(markedContent);
     });
+
+    var url = document.location.href;
+    new Clipboard('.btn', {
+        text: function() {
+          return url;
+        }
+      });
 });
-
-
-var url = document.location.href;
-new Clipboard('.btn', {
-    text: function() {
-      return url;
-    }
-  });
