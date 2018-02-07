@@ -259,7 +259,7 @@ $(function() {
                     $(element).hide();
                     return;
                 }
-            });
+            };
 
             $(element).show();
         }
