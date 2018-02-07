@@ -44,6 +44,10 @@ class Command(BaseCommand):
         # Save the new status. If sendalerts crashes,
         # it won't process this check again.
         check.status = check.get_status()
+        if check.status == "down":
+            check.nag_after = timezone.now() + check.nag
+            check.nag_status = True
+            
         check.save()
 
         tmpl = "\nSending alert, status=%s, code=%s\n"

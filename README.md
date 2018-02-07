@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andela/hc-anansi.svg?branch=reports)](https://travis-ci.org/andela/hc-anansi) [![Coverage Status](https://coveralls.io/repos/github/andela/hc-anansi/badge.svg?branch=reports)](https://coveralls.io/github/andela/hc-anansi?branch=reports) [![Maintainability](https://api.codeclimate.com/v1/badges/05bc00c4c66c64132a17/maintainability)](https://codeclimate.com/github/andela/hc-anansi/maintainability) [![CircleCI](https://circleci.com/gh/andela/hc-anansi/tree/reports.svg?style=svg)](https://circleci.com/gh/andela/hc-anansi/tree/reports)
+[![Build Status](https://travis-ci.org/andela/hc-anansi.svg?branch=develop)](https://travis-ci.org/andela/hc-anansi) [![Coverage Status](https://coveralls.io/repos/github/andela/hc-anansi/badge.svg?branch=develop)](https://coveralls.io/github/andela/hc-anansi?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/05bc00c4c66c64132a17/maintainability)](https://codeclimate.com/github/andela/hc-anansi/maintainability) [![CircleCI](https://circleci.com/gh/andela/hc-anansi/tree/develop.svg?style=svg)](https://circleci.com/gh/andela/hc-anansi/tree/develop)
 
 # healthchecks
 

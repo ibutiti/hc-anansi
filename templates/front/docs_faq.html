@@ -1,0 +1,17 @@
+{% extends "front/base_docs.html" %}
+{% load staticfiles %}
+
+{% block title %}FAQ - healthchecks.io{% endblock %}
+
+{% block docs_content %}
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<h2>General</h2>
+{% for faq in faqs %}
+    <h2 class="rule">{{ faq.question }}</h2>
+    <p>
+        {{ faq.answer|safe }}
+    </p>
+{% endfor %}
+</div>
+{% endblock %}

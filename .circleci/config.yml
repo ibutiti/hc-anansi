@@ -6,6 +6,7 @@ jobs:
     docker:
       - image: circleci/python:3.6.4
         environment:
+        - SITE_ROOT: "http://localhost:8000"
         - DJANGO_SETTINGS_MODULE: hc.settings
 
       # Specify service dependencies here if necessary
@@ -43,6 +44,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            python manage.py makemigrations
             python manage.py migrate
             python manage.py collectstatic --noinput
             python manage.py test

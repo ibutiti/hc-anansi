@@ -8,6 +8,10 @@ body {
     margin-bottom: 140px;
 }
 
+p {
+    font-family: 'Muli', sans-serif;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

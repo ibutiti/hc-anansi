@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% if messages %}
+<div class="col-sm-12">
+    {% for message in messages %}
+        <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+       {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+    <div>
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">Home</a></li>
+                {% if request.user.is_authenticated %}
+                <li role="presentation"><a href="{% url 'hc-create_blog' %}">Create Blog</a></li>
+                {% endif %}
+                <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                          Filter by Category <span class="caret"></span> </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation"><a href="{% url 'hc-blog' filter_by=0%}">All</a></li>
+                   {% for category in category %}
+                      <li role="presentation"><a href="{% url 'hc-blog' filter_by=category.id %}">{{ category }}</a></li>                   {% endfor %}
+                 </ul>
+                </li>
+            </ul>
+        </div>        
+    </div>
+{% for stories in blogs %}
+<div class="row">
+        {% for story in stories %}
+        <div class="col-md-4 blog-item">
+            <img class="img-responsive" src="https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2016-07-07/57802419554_47decd25da0b63135665_512.png" alt="Card image cap">
+            <div class="card-header">
+                <h2> {{ story.title }} </h2>
+            </div>
+            
+            <div class="card-body">
+                <p> {{ story.content | truncatechars:55 }} </p>
+                <a href=" {% url 'hc-read_blog' pk=story.id %} " class="btn btn-primary">Read more</a>
+            </div>    
+        </div>
+        {% endfor %}
+</div>
+        {% endfor %}
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from datetime import timedelta as td
 from itertools import tee
 
 import requests
+from django.http import HttpResponse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -12,12 +13,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django.forms.models import model_to_dict
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                             TimeoutForm)
-
+from .models import Faq, Tutorial
+from .forms import CreateBlogPost, CreateCategory, CreateCommentForm
+from .models import Category, Blog_post, Comment
 
 # from itertools recipes:
 def pairwise(iterable):
@@ -25,6 +29,109 @@ def pairwise(iterable):
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
+
+
+def blogs(request, filter_by):
+    """function to render the home page"""
+    num = 3 # setting number of blog posts to be displayed as three per row
+    category = Category.objects.all()
+    if int(filter_by):
+        category_id = Category.objects.get(pk=filter_by).id
+        stories = Blog_post.objects.filter(category=category_id)
+    else:
+        stories = Blog_post.objects.all()
+    list_of_stories = [story for story in stories]
+    blogs = [list_of_stories[item:item+num] for item in range(0, len(list_of_stories), num)]
+    ctx = {
+        'category':category,
+        'blogs':blogs
+    }
+    return render(request, 'front/blog_posts.html', ctx)
+
+
+def create_blog(request):
+    """function to create a category and a blog """
+    form = CreateBlogPost(request.POST)
+    category_form = CreateCategory(request.POST)
+    if request.method == 'POST':
+        if 'new_category' in request.POST and category_form.is_valid():
+                name = category_form.cleaned_data['category']
+                ctg = Category(name = name)
+                ctg.save()
+                return redirect(create_blog)
+        elif 'create_blog' in request.POST and form.is_valid():
+                title = request.POST['title'] 
+                blog = form.cleaned_data['content']
+                selected_category = request.POST['category_name']
+                category = Category.objects.get(name=selected_category)
+                published = timezone.now()
+                user = request.user
+                blog = Blog_post(title=title, content=blog, category=category,
+                                published=published, user=user)
+                blog.save()
+                messages.add_message(request, messages.INFO, 'Successfully created blog')
+                return redirect(read_blog, pk=blog.id)
+    else:
+        categories = Category.objects.all()
+        ctx = {
+            'category': categories,
+            'form': CreateBlogPost({'content':'Write Blog'}),
+            'category_form': category_form,
+            'edit': False
+            }
+        return render(request, 'front/create_blog.html', ctx)
+
+
+def read_blog(request, pk):
+    comment_form = CreateCommentForm(request.POST)
+    blog = Blog_post.objects.get(pk=pk)
+    featured = Blog_post.objects.get(pk=pk)
+    comments = Comment.objects.filter(blog = blog.id)
+    url = "hc-anansi-staging.herokuapp.com/blog/read_blog/{pk}".format(pk=pk)
+    ctx = {
+        'blog': blog,
+        'featured': featured,
+        'tweet_url': url,
+        'comments': comments
+    }
+    if 'add_comment' in request.POST and comment_form.is_valid():
+            posted_comment = request.POST['comment']
+            published = timezone.now()
+            comment = Comment(comment = posted_comment, blog = blog, user = request.user, published=published)
+            comment.save()
+            return redirect(read_blog, pk=blog.id)
+    return render(request, 'front/readblog.html', ctx )
+
+
+def delete_blog(request, pk):
+    deleted_blog = Blog_post.objects.get(pk=pk)
+    Blog_post.objects.get(pk=pk).delete()
+    messages.add_message(request, messages.INFO, 'Successfully deleted blog')
+    return redirect(blogs, filter_by=0)
+
+
+def edit_blog(request, pk):
+    blog =  Blog_post.objects.get(pk=pk)
+    Category = blog.category
+    if request.method == 'POST':
+        form = CreateBlogPost(request.POST)
+        category_form = CreateCategory(request.POST)
+        if "create_blog" in request.POST and form.is_valid():
+                blog.category = blog.category
+                blog.title = request.POST['title']
+                blog.content = request.POST['content']
+                blog.publish = timezone.now()
+                blog.save()
+                messages.add_message(request, messages.INFO, 'Successfully edited blog')
+                return redirect(read_blog, pk)
+    else:
+        form = CreateBlogPost({'content':blog.content})
+        ctx = {
+        'form': form,
+        'title': blog.title,
+        'edit': True
+         }
+        return render(request, "front/create_blog.html", ctx )
 
 
 @login_required
@@ -122,6 +229,42 @@ def docs_api(request):
     }
 
     return render(request, "front/docs_api.html", ctx)
+
+def docs_faq(request):
+    """
+    Renders the faq page
+    """
+    all_faqs = Faq.objects.all()
+    faqs = list(all_faqs)
+    
+    ctx = {
+        "page": "docs",
+        "section": "faq",
+        "SITE_ROOT": settings.SITE_ROOT,
+        "PING_ENDPOINT": settings.PING_ENDPOINT,
+        "faqs": faqs
+    }
+
+    return render(request, "front/docs_faq.html", ctx)
+
+
+def docs_getting_started(request):
+    """
+    Renders the getting started page
+    """
+    all_tutorials = Tutorial.objects.all()
+    tutorials = list(all_tutorials)
+    # get tutorial titles
+    all_tutorial_titles = Tutorial.objects.values_list('title', flat=True).all()
+    titles_list = list(all_tutorial_titles)
+    ctx = {
+        "page": "docs",
+        "section": "overview",
+        "tutorials": tutorials,
+        "titles": titles_list
+    }
+
+    return render(request, "front/docs_getting_started.html", ctx)
 
 
 def about(request):

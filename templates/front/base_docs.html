@@ -5,7 +5,15 @@
 <div class="row">
     <div class="col-sm-2">
 
-    <ul class="docs-nav">
+        <ul class="docs-nav">
+        <li {% if section == "overview" %} class="active" {% endif %}>
+            <a href="{% url 'hc-docs-overview' %}">Getting Started</a>
+            <ul>
+                {% for title in titles %}
+                    <li><a href="{% url 'hc-docs-overview' %}#{{ title }}">{{ title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
         <li {% if section == "home" %} class="active" {% endif %}>
             <a href="{% url 'hc-docs' %}">Executing a Ping</a>
             <ul>
@@ -21,6 +29,9 @@
         </li>
         <li {% if section == "api" %} class="active" {% endif %}>
             <a href="{% url 'hc-docs-api' %}">REST API</a>
+        </li>
+        <li {% if section == "faq" %} class="active" {% endif %}>
+            <a href="{% url 'hc-docs-faq' %}">FAQ</a>
         </li>
     </ul>
 

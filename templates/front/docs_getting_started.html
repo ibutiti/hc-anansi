@@ -1,0 +1,29 @@
+{% extends "front/base_docs.html" %}
+{% load staticfiles %}
+
+{% block title %}Overview - healthchecks.io{% endblock %}
+
+{% block docs_content %}
+<div>
+    <h2>Getting Started</h2>
+    <hr>
+    <p>
+        New to Healthcheck and/or cron job monitoring in general? Well, fear no more, the following
+        tips and demo videos are made with <span><i class="fa fa-heart-o"></i></span> just for you.
+    </p>
+    <hr>
+    
+    {% for tutorial in tutorials %}
+    <a name="{{ tutorial.title }}"></a>
+    <h3>{{ tutorial.title }}</h3>
+    <div>{{ tutorial.content|safe }}</div>
+    {% if tutorial.video_link %}
+        <div class="video-wrapper">
+            <iframe width="100%" height="400" src="{{ tutorial.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    {% endif %}
+    <hr>
+    {% endfor %}
+    <p>Check out the other segments of the documentation for a more in depth understanding.</p>
+</div>
+{% endblock %}

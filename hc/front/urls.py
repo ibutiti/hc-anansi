@@ -28,6 +28,14 @@ channel_urls = [
         name="hc-verify-email"),
 ]
 
+blog_urls = [
+    url(r'^$', views.blogs, name="hc-blog"),
+    url(r'^create_blog$', views.create_blog, name="hc-create_blog"),
+    url(r'^read_blog/(?P<pk>\d+)$', views.read_blog, name="hc-read_blog"),
+    url(r'^edit_blog/(?P<pk>\d+)$', views.edit_blog, name="hc-edit_blog"),
+    url(r'^delete_blog/(?P<pk>\d+)$', views.delete_blog, name="hc-delete_blog")
+  ]
+  
 urlpatterns = [
     url(r'^$', views.index, name="hc-index"),
     url(r'^checks/$', views.my_checks, name="hc-checks"),
@@ -37,7 +45,13 @@ urlpatterns = [
 
     url(r'^docs/$', views.docs, name="hc-docs"),
     url(r'^docs/api/$', views.docs_api, name="hc-docs-api"),
+    url(r'^docs/faq/$', views.docs_faq, name="hc-docs-faq"),
+    url(r'^docs/getting_started/$', views.docs_getting_started, name="hc-docs-overview"),
     url(r'^about/$', views.about, name="hc-about"),
     url(r'^privacy/$', views.privacy, name="hc-privacy"),
     url(r'^terms/$', views.terms, name="hc-terms"),
+
+    url(r'^blog/', include(blog_urls)),
+    url(r'^blog/(?P<filter_by>\d+)/', include(blog_urls)),
+    url(r'^blog/([\w-]+)/', include(blog_urls)),
 ]

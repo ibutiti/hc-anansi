@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block blog_head %}
+
+{{ form.media }}
+
+{% endblock %}
+{% block title %}blog{% endblock %}
+
+{% block content %}
+{% if messages %}
+<div class="col-sm-12">
+    {% for message in messages %}
+        <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+       {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+    <div>
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="{% url 'hc-blog' filter_by=0%}">Home</a></li>
+                {% if request.user.is_authenticated %}
+                <li role="presentation" class="active"><a href="#">Create Blog</a></li>
+                {% endif %}
+                <li role="presentation" class="dropdown">
+                </li>
+            </ul>
+        </div>        
+    </div>
+</div><br>
+
+<div class="col-sm-6 col-sm-offset-3">
+   <span class="glyphicon glyphicon-home"></span>
+
+    <form method="POST"> {% csrf_token %}
+        {% if edit == False %}
+        <label for="category">Select category:</label><br>
+        <select id="category" name="category_name" class="form-control">
+          {% for category in category %}
+          <option value="{{ category.name }}"> {{ category.name }} </option>
+          {% endfor %}
+        </select><br>
+        {% endif %}
+        <label for="title">Title:</label><br>
+        <input type="text" name="title" class="form-control myfieldclass" placeholder="Blog Title" required="" id="id_title" value="{{ title }}"><br>
+        {{ form }}
+        {% if edit == True %}
+        <button type="submit" name="create_blog" class="submit-blog btn btn-primary">Update Blog</button>
+        {% else %}
+        <button type="submit" name="create_blog" class="submit-blog btn btn-primary">Create Blog</button>
+        {% endif %}
+    </form>
+</div>
+    <br>
+    {% if edit == False %}
+      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModalNorm", style="padding: 9px;">
+        ADD
+        </button>
+        <div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal">
+                               <span aria-hidden="true">&times;</span>
+                               <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Create a new Category
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST"> {% csrf_token %}
+                        {{  category_form }}
+                         <br>
+                          <button type="submit" name="new_category"  class="btn btn-default">Create</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">
+                                    Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}    
+
+{% endblock %}

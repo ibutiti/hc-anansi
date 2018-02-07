@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -12,6 +12,7 @@
     {% load compress staticfiles %}
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
+   
     {% compress css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}" type="text/css">
@@ -30,6 +31,8 @@
     <link rel="stylesheet" href="{% static 'css/log.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/add_pushover.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/settings.css' %}" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}" type="text/css">
     {% endcompress %}
 </head>
 <body class="page-{{ page }}">
@@ -97,6 +100,9 @@
 
                 <li {% if page == 'about' %} class="active" {% endif %}>
                     <a href="{% url 'hc-about' %}">About</a>
+                </li>
+                <li {% if page == 'blog' %} class="active" {% endif %}>
+                    <a href="{% url 'hc-blog' filter_by=0%}">Blog</a>
                 </li>
             </ul>
 
@@ -168,7 +174,21 @@
     {% compress js %}
     <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="https://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
+    <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
+    <script src="https://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
+    <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
     {% endcompress %}
     {% endblock %}
+    <!-- Session user email for Live Chat ID -->
+    <script type="text/javascript">
+        var name = "{{ request.user.email }}"
+    </script>
+    <!-- olark widget -->
+    <script src="{% static 'js/olark.js' %}"></script>
 </body>
 </html>
+
+{% block blog_head %} {% endblock blog_head %}
