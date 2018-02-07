@@ -75,7 +75,7 @@
         <div class="share" style="margin-left:90px;">
             <h4 class="pb-3 mb-4 font-italic border-bottom">Share</h4>
             <a target="_blank"  href="https://twitter.com/intent/tweet?text={{blog.title}}&url={{tweet_url}}&hashtags=HealthChecks" class="fa fa-twitter"></a>
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?url=hc-anansi-staging.herokuapp.com{{ request.get_full_path|urlencode }}&title={{ blog.title }}&summary={{ blog.content }}&source=https://hc-anansi-staging.herokuapp.com" class="fa fa-linkedin"></a>
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?url=https://hc-anansi-staging.herokuapp.com{{ request.get_full_path|urlencode }}&title={{ blog.title }}&summary={{ blog.content }}&source=https://hc-anansi-staging.herokuapp.com" class="fa fa-linkedin"></a>
             <a class="btn fa fa-clipboard" style="background: #1b729b; color: white;"></a><br>
         </div>
 
@@ -89,6 +89,7 @@
         </div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js"></script>
 <script
   src="http://code.jquery.com/jquery-1.12.4.min.js"
   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
